@@ -7,17 +7,24 @@
 #include <string>
 
 #define WORLDSIZE 17
+#define clearscreen system("cls");
 
 using namespace std;
 
-int posX = ((WORLDSIZE - 1) / 2), posY = ((WORLDSIZE - 1) / 2);
 char gameGrid[WORLDSIZE][WORLDSIZE];
-char direction  = 'a';
+
+int posX		= ((WORLDSIZE - 1) / 2);
+int posY		= ((WORLDSIZE - 1) / 2);
 int score		= 0;
-int GAMESPEED   = 500;
+int GAMESPEED	= 500;
+char direction = 'a';
 bool running	= false;
 
-struct pos { int x; int y; };
+struct pos { 
+	int x; 
+	int y; 
+};
+
 deque <pos> positions;
 
 void gameLoop();
@@ -29,21 +36,18 @@ int main()
 {
 	srand(time(NULL));
 
-	cout << "Welcome to BTEC snake game. \n";
+	cout << "Welcome to BTEC snake game." << endl;
 	cout << "Loading..." << endl;
 
-	for (int i = 0; i < WORLDSIZE; i++)
-	{
-		for (int j = 0; j < WORLDSIZE; j++)
-		{
-			if ((j == 0) | (j == WORLDSIZE - 1) | (i == 0) | (i == WORLDSIZE - 1))
-			{
+	for (int i = 0; i < WORLDSIZE; i++) {
+		for (int j = 0; j < WORLDSIZE; j++) {
+			if ((j == 0) | (j == WORLDSIZE - 1) | (i == 0) | (i == WORLDSIZE - 1)) {
 				gameGrid[i][j] = '#';
 			} else {
 				gameGrid[i][j] = ' ';
 			}
-		};
-	};
+		}
+	}
 
 	spawnApple();
 
@@ -51,10 +55,10 @@ int main()
 	
 	gameLoop();
 
-	system("cls");
+	clearscreen;
 	cout << "Game Over!" << endl;
+	cout << "Your overall score was: " << score << '!' << endl;
 	userInput.join();
-	
 };
 
 void gameLoop()
@@ -62,50 +66,54 @@ void gameLoop()
 	running = true;
 
 	//INIT CHARACTER
-	for (int i = 0; i < 3; i++)
-	{
-		pos temp = {posX, posY+(i+1)};
+	for (int i = 0; i < 3; i++) {
+		pos temp = {
+			posX, 
+			posY+(i+1)
+		};
 		positions.push_back(temp);
 	}
 
 	DWORD currentTick = GetTickCount64();
 	int sleepTime;
 
-	while (running)
-	{
-		pos t1 = { posX, posY };
+	while (running) {
+		pos t1 = { 
+			posX, 
+			posY 
+		};
 		gameGrid[posX][posY] = ' ';
 
-		if (direction == 'a')
-		{
+		if (direction == 'a') {
 			posY -= 1;
-			if (!detectHit(posX, posY))
-			{
+			if (!detectHit(posX, posY)) {
 				gameGrid[posX][posY] = '<';
 			}
-		} else if (direction == 'w') {
+		}
+		else if (direction == 'w') {
 			posX -= 1;
-			if (!detectHit(posX, posY))
-			{
+			if (!detectHit(posX, posY)) {
 				gameGrid[posX][posY] = '^';
 			}
-		} else if (direction == 'd') {
+		}
+		else if (direction == 'd') {
 			posY += 1;
-			if (!detectHit(posX, posY))
-			{
+			if (!detectHit(posX, posY)) {
 				gameGrid[posX][posY] = '>';
 			}
-		} else if (direction == 's') {
+		}
+		else if (direction == 's') {
 			posX += 1;
-			if (!detectHit(posX, posY))
-			{
+			if (!detectHit(posX, posY)) {
 				gameGrid[posX][posY] = 'v';
 			}
 		}
 
-		if (running == false) { break; } //instant endscreen
+		if (running == false) { 
+			break; 
+		} //instant endscreen
 		
-		system("cls");
+		clearscreen;
 
 		//Ugly
 		positions.push_front(t1);
@@ -122,8 +130,7 @@ void gameLoop()
 		for (int i = 0; i < WORLDSIZE; i++) // DRAW BOARD
 		{
 			string line;
-			for (int j = 0; j < WORLDSIZE; j++)
-			{
+			for (int j = 0; j < WORLDSIZE; j++) {
 				line = line + ' ' + gameGrid[i][j] + ' ';
 				//line << ' ' << gameGrid[i][j] << ' ';
 			}
@@ -133,8 +140,7 @@ void gameLoop()
 
 		currentTick += (GAMESPEED-score);
 		sleepTime = currentTick - GetTickCount64();
-		if (sleepTime >= 0 )
-		{
+		if (sleepTime >= 0 ) {
 			Sleep(sleepTime);
 		} else {
 			//We are running behind
@@ -145,15 +151,13 @@ void gameLoop()
 bool detectHit(int x, int y)
 {
 	//Negative hit
-	if (gameGrid[x][y] == '#' || gameGrid[x][y] == '*')
-	{
+	if (gameGrid[x][y] == '#' || gameGrid[x][y] == '*') {
 		running = false;
 		return true;
 	}
 
 	//Positive hit
-	if (gameGrid[x][y] == '@')
-	{
+	if (gameGrid[x][y] == '@') {
 		spawnApple();
 	}
 
@@ -165,32 +169,26 @@ void spawnApple()
 	bool openSpace = false;
 	int randX, randY;
 
-	if (running)
-	{
+	if (running) {
 		score += 50;
 		positions.push_back(positions.back());
 	}
 
-	while (!openSpace)
-	{
+	while (!openSpace) {
 		randX = rand() % ((((WORLDSIZE - 1) - 1) + 1) + 1), randY = rand() % ((((WORLDSIZE - 1) - 1) + 1) + 1);
-		if (gameGrid[randX][randY] == ' ')
-		{
+		if (gameGrid[randX][randY] == ' ') {
 			openSpace = true;
 			gameGrid[randX][randY] = '@';
 		}
 	}
-
 }
 
 void detectInput() //Threaded task
 {
-	while (true)
-	{
+	while (true) {
 		char input = _getch();
 
-		switch (input)
-		{
+		switch (input) {
 		case 'w':
 			direction = 'w';
 			break;
