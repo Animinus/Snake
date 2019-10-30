@@ -13,9 +13,9 @@ using namespace std;
 
 char gameGrid[WORLDSIZE][WORLDSIZE];
 
-int posX		= ((WORLDSIZE - 1) / 2);
-int posY		= ((WORLDSIZE - 1) / 2);
-int score		= 0;
+int posX	= ((WORLDSIZE - 1) / 2);
+int posY	= ((WORLDSIZE - 1) / 2);
+int score	= 0;
 char direction  = 'a';
 bool running	= false;
 
