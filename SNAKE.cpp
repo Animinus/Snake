@@ -16,7 +16,6 @@ char gameGrid[WORLDSIZE][WORLDSIZE];
 int posX		= ((WORLDSIZE - 1) / 2);
 int posY		= ((WORLDSIZE - 1) / 2);
 int score		= 0;
-int GAMESPEED	= 500;
 char direction = 'a';
 bool running	= false;
 
@@ -36,12 +35,12 @@ int main()
 {
 	srand(time(NULL));
 
-	cout << "Welcome to BTEC snake game." << endl;
-	cout << "Loading..." << endl;
+	cout << "Welcome to BTEC snake game." << '\n';
+	cout << "Loading..." << '\n';
 
 	for (int i = 0; i < WORLDSIZE; i++) {
 		for (int j = 0; j < WORLDSIZE; j++) {
-			if ((j == 0) | (j == WORLDSIZE - 1) | (i == 0) | (i == WORLDSIZE - 1)) {
+			if ((j == 0) || (j == WORLDSIZE - 1) || (i == 0) || (i == WORLDSIZE - 1)) {
 				gameGrid[i][j] = '#';
 			} else {
 				gameGrid[i][j] = ' ';
@@ -56,8 +55,8 @@ int main()
 	gameLoop();
 
 	clearscreen;
-	cout << "Game Over!" << endl;
-	cout << "Your overall score was: " << score << '!' << endl;
+	cout << "Game Over!" << '\n';
+	cout << "Your overall score was: " << score << '!' << '\n';
 	userInput.join();
 };
 
@@ -82,8 +81,9 @@ void gameLoop()
 			posX, 
 			posY 
 		};
-		gameGrid[posX][posY] = ' ';
 
+		gameGrid[posX][posY] = ' ';
+		
 		if (direction == 'a') {
 			posY -= 1;
 			if (!detectHit(posX, posY)) {
@@ -112,8 +112,9 @@ void gameLoop()
 		if (running == false) { 
 			break; 
 		} //instant endscreen
-		
+
 		clearscreen;
+		
 
 		//Ugly
 		positions.push_front(t1);
@@ -131,14 +132,16 @@ void gameLoop()
 		{
 			string line;
 			for (int j = 0; j < WORLDSIZE; j++) {
-				line = line + ' ' + gameGrid[i][j] + ' '; //Can't use += here
+				line = line + ' ' + gameGrid[i][j] + ' ';
+				//line << ' ' << gameGrid[i][j] << ' ';
 			}
-			cout << line << endl;
+			cout << line << '\n';
 		}
-		cout << "\t\t     Score: " << score << endl;
+		cout << "\t\t     Score: " << score << '\n';
 
-		currentTick += (GAMESPEED-score);
+		currentTick += (500-score);
 		sleepTime = currentTick - GetTickCount64();
+		
 		if (sleepTime >= 0 ) {
 			Sleep(sleepTime);
 		} else {
@@ -165,13 +168,13 @@ bool detectHit(int x, int y)
 
 void spawnApple()
 {
-	bool openSpace = false;
-	int randX, randY;
-
 	if (running) {
 		score += 50;
 		positions.push_back(positions.back());
 	}
+
+	bool openSpace = false;
+	int randX, randY;
 
 	while (!openSpace) {
 		randX = rand() % ((((WORLDSIZE - 1) - 1) + 1) + 1), randY = rand() % ((((WORLDSIZE - 1) - 1) + 1) + 1);
@@ -199,6 +202,8 @@ void detectInput() //Threaded task
 			break;
 		case 'd':
 			direction = 'd';
+			break;
+		default:
 			break;
 		}
 	}
