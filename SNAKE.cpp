@@ -16,7 +16,7 @@ char gameGrid[WORLDSIZE][WORLDSIZE];
 int posX		= ((WORLDSIZE - 1) / 2);
 int posY		= ((WORLDSIZE - 1) / 2);
 int score		= 0;
-char direction = 'a';
+char direction  = 'a';
 bool running	= false;
 
 struct pos { 
@@ -115,7 +115,6 @@ void gameLoop()
 
 		clearscreen;
 		
-
 		//Ugly
 		positions.push_front(t1);
 		pos toRemove = positions.back();
@@ -208,4 +207,3 @@ void detectInput() //Threaded task
 		}
 	}
 }
-
