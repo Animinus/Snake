@@ -17,8 +17,6 @@ int score		= 0;
 int GAMESPEED   = 500;
 bool running	= false;
 
-
-
 struct pos { int x; int y; };
 deque <pos> positions;
 
