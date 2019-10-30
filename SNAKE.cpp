@@ -131,8 +131,7 @@ void gameLoop()
 		{
 			string line;
 			for (int j = 0; j < WORLDSIZE; j++) {
-				line = line + ' ' + gameGrid[i][j] + ' ';
-				//line << ' ' << gameGrid[i][j] << ' ';
+				line = line + ' ' + gameGrid[i][j] + ' '; //Can't use += here
 			}
 			cout << line << endl;
 		}
