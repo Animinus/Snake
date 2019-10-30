@@ -1,9 +1,11 @@
-﻿#include <stdlib.h>
+#include <stdlib.h>
 #include <conio.h>
 #include <windows.h>
 #include <iostream>
 #include <thread>
 #include <deque>
+#include <string>
+
 #define WORLDSIZE 17
 
 using namespace std;
@@ -121,11 +123,13 @@ void gameLoop()
 
 		for (int i = 0; i < WORLDSIZE; i++) // DRAW BOARD
 		{
+			string line;
 			for (int j = 0; j < WORLDSIZE; j++)
 			{
-				cout << " " << gameGrid[i][j] << " ";
+				line = line + ' ' + gameGrid[i][j] + ' ';
+				//line << ' ' << gameGrid[i][j] << ' ';
 			}
-			cout << "\n";
+			cout << line << endl;
 		}
 		cout << "\t\t     Score: " << score << endl;
 
